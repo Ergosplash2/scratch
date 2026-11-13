@@ -2,13 +2,24 @@
  * SPDX-License-Identifier: GPL-2.0-only
  */
 
+// for the cmd stats we need flowmonitor, so include it and add the 2lines for helper, 
+// and we copy paste that long code, thats about it
+
+//for netanim, we need include the (2)module, and add the 2 lines for mobility and animationinterface, 
+// and set the position of the nodes, set the xml file name too also
+
+
 #include "ns3/applications-module.h"
 #include "ns3/core-module.h"
 #include "ns3/internet-module.h"
 #include "ns3/network-module.h"
 #include "ns3/point-to-point-module.h"
-#include "ns3/mobility-module.h"
+
 #include "ns3/flow-monitor-module.h"
+
+#include "ns3/mobility-module.h"
+#include "ns3/netanim-module.h"
+
 
 // Default Network Topology
 // djiksta (shortest path first algorithm)
@@ -27,7 +38,6 @@
 
 // so basically u need a routing option, either have static or global, and to keep it pointtopoint it needs to be a pair of devices i believe?
 
-#include "ns3/netanim-module.h"
 
 using namespace ns3;
 
