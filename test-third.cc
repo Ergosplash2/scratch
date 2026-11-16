@@ -82,24 +82,30 @@ main(int argc, char* argv[])
     NetDeviceContainer csmaDevices;
     csmaDevices = csma.Install(csmaNodes);
 
-    NodeContainer wifiStaNodes;
+    NodeContainer wifiStaNodes; // stations are like phones and laptops, they connect to the access point, which is like a router
     wifiStaNodes.Create(nWifi);
-    NodeContainer wifiApNode = p2pNodes.Get(0);
+    NodeContainer wifiApNode = p2pNodes.Get(0); // the access point is like a router
 
-    YansWifiChannelHelper channel = YansWifiChannelHelper::Default();
-    YansWifiPhyHelper phy;
+    YansWifiChannelHelper channel = YansWifiChannelHelper::Default(); // 
+    YansWifiPhyHelper phy; // ph
     phy.SetChannel(channel.Create());
-
-    WifiMacHelper mac;
+    //the channel is used to connect the stations and the access point
+    //the phy layer is used to send and receive packets,
+    
+    WifiMacHelper mac; // 
     Ssid ssid = Ssid("ns-3-ssid");
 
     WifiHelper wifi;
 
-    NetDeviceContainer staDevices; //there is sta and there is ap?
+    NetDeviceContainer staDevices; //stations
     mac.SetType("ns3::StaWifiMac", "Ssid", SsidValue(ssid), "ActiveProbing", BooleanValue(false));
-    staDevices = wifi.Install(phy, mac, wifiStaNodes);
+    staDevices = wifi.Install(phy, mac, wifiStaNodes); // kinda like the address thing the way we set it after altering it
+    // this installs the devices on the station, with the correct type, also
+    // active probing is set to false, cuz its an ap thing not a station thing
 
-    NetDeviceContainer apDevices;
+    // the ap does active probing, the station just listens for the ap to say 
+    //hey im here, and then it connects to it
+    NetDeviceContainer apDevices; //access point devices, there is only one ap device, but there are multiple sta devices
     mac.SetType("ns3::ApWifiMac", "Ssid", SsidValue(ssid));
     apDevices = wifi.Install(phy, mac, wifiApNode);
 
