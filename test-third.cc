@@ -16,14 +16,14 @@
 #include "ns3/netanim-module.h"
 // Default Network Topology
 //
-//   Wifi 10.1.3.0
+//   Wifi 172.11.3.0
 //                 AP
 //  *    *    *    *
-//  |    |    |    |    10.1.1.0
+//  |    |    |    |    172.11.1.0
 // n5   n6   n7   n0 -------------- n1   n2   n3   n4
 //                   point-to-point  |    |    |    |
 //                                   ================
-//                                     LAN 10.1.2.0
+//                                     LAN 172.11.2.0
 
 using namespace ns3;
 
@@ -86,8 +86,9 @@ main(int argc, char* argv[])
     wifiStaNodes.Create(nWifi);
     NodeContainer wifiApNode = p2pNodes.Get(0); // the access point is like a router
 
+    // yans= yet another network simulator
     YansWifiChannelHelper channel = YansWifiChannelHelper::Default(); // 
-    YansWifiPhyHelper phy; // ph
+    YansWifiPhyHelper phy; 
     phy.SetChannel(channel.Create());
     //the channel is used to connect the stations and the access point
     //the phy layer is used to send and receive packets,
@@ -159,28 +160,28 @@ main(int argc, char* argv[])
 
     Ipv4AddressHelper address;
 
-    address.SetBase("10.1.1.0", "255.255.255.0");
+    address.SetBase("172.11.1.0", "255.255.255.0");
     Ipv4InterfaceContainer p2pInterfaces;
     p2pInterfaces = address.Assign(p2pDevices);
 
-    address.SetBase("10.1.2.0", "255.255.255.0");
+    address.SetBase("172.11.2.0", "255.255.255.0");
     Ipv4InterfaceContainer csmaInterfaces;
     csmaInterfaces = address.Assign(csmaDevices);
 
-    address.SetBase("10.1.3.0", "255.255.255.0");
+    address.SetBase("172.11.3.0", "255.255.255.0");
     address.Assign(staDevices);
     address.Assign(apDevices);
 
-    UdpEchoServerHelper echoServer(9);
+    UdpEchoServerHelper echoServer(3456);
 
     ApplicationContainer serverApps = echoServer.Install(csmaNodes.Get(nCsma));
     serverApps.Start(Seconds(1));
     serverApps.Stop(Seconds(10));
 
-    UdpEchoClientHelper echoClient(csmaInterfaces.GetAddress(nCsma), 9);
-    echoClient.SetAttribute("MaxPackets", UintegerValue(1));
+    UdpEchoClientHelper echoClient(csmaInterfaces.GetAddress(nCsma), 3456);
+    echoClient.SetAttribute("MaxPackets", UintegerValue(2));
     echoClient.SetAttribute("Interval", TimeValue(Seconds(1)));
-    echoClient.SetAttribute("PacketSize", UintegerValue(2024));
+    echoClient.SetAttribute("PacketSize", UintegerValue(2048));
 
     ApplicationContainer clientApps = echoClient.Install(wifiStaNodes.Get(nWifi - 1));
     clientApps.Start(Seconds(2));
@@ -188,15 +189,25 @@ main(int argc, char* argv[])
 
     Ipv4GlobalRoutingHelper::PopulateRoutingTables();
 
+    
+    AsciiTraceHelper ascii;
+    pointToPoint.EnableAsciiAll(ascii.CreateFileStream("third-p2p.tr"));
+    csma.EnableAsciiAll(ascii.CreateFileStream("third-csma.tr"));
+    phy.EnableAsciiAll(ascii.CreateFileStream("third-wifi.tr"));
+
+
     Simulator::Stop(Seconds(10));
 
     if (tracing)
     {
         phy.SetPcapDataLinkType(WifiPhyHelper::DLT_IEEE802_11_RADIO);
-        pointToPoint.EnablePcapAll("p2p-third");
-        phy.EnablePcap("wifi-third", apDevices.Get(0));
-        csma.EnablePcap("csma-third", csmaDevices.Get(0), true);
+        pointToPoint.EnablePcapAll("third-p2p"); //btw we use the helpers to enable pcap and tracing
+        phy.EnablePcap("third-wifi", apDevices.Get(0)); //
+        csma.EnablePcap("third-csma", csmaDevices.Get(0), true); 
     }
+
+
+
 
     Simulator::Run();
 
