@@ -9,6 +9,18 @@
 #include "ns3/point-to-point-module.h"
 #include "ns3/mobility-module.h"
 
+
+
+// first.cc first try at 5 nodes, no global routing, one server one client, simple line topo
+
+
+
+
+
+
+
+
+
 // Default Network Topology
 //
 //       10.1.1.0    10.1.2.0    10.1.3.0    10.1.4.0

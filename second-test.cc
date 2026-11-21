@@ -110,8 +110,8 @@ main(int argc, char* argv[])
     serverApps.Stop(Seconds(10));
 
     UdpEchoClientHelper echoClient(csmaInterfaces.GetAddress(nCsma), 1234);
-    echoClient.SetAttribute("MaxPackets", UintegerValue(3));
-    echoClient.SetAttribute("Interval", TimeValue(Seconds(1)));
+    echoClient.SetAttribute("MaxPackets", UintegerValue(10));
+    echoClient.SetAttribute("Interval", TimeValue(Seconds(0.001)));
     echoClient.SetAttribute("PacketSize", UintegerValue(2024)); //seems like it needs to send twice in a row cuz cap is 1500 
 
     ApplicationContainer clientApps = echoClient.Install(p2pNodes.Get(0)); // first node in p2pNodes is the client
@@ -147,7 +147,8 @@ main(int argc, char* argv[])
 
     Simulator::Run();
 
-
+    monitor->CheckForLostPackets();
+    monitor->SerializeToXmlFile("second-flowmonitor.xml", true, true);
 
 
 

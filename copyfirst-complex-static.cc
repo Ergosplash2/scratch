@@ -9,6 +9,20 @@
 #include "ns3/point-to-point-module.h"
 #include "ns3/mobility-module.h"
 
+
+
+// first.cc complex topo, no cmd stats, one client one server.
+
+
+
+
+
+
+
+
+
+
+
 // Default Network Topology
 //
 //       10.1.1.0    10.1.2.0    10.1.3.0    10.1.4.0

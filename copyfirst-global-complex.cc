@@ -10,6 +10,20 @@
 #include "ns3/mobility-module.h"
 #include "ns3/flow-monitor-module.h"
 
+
+
+// first.cc complex topo, no cmd stats, one server, one client
+
+
+
+
+
+
+
+
+
+
+
 // Default Network Topology
 // djiksta (shortest path first algorithm)
 //       10.1.1.0    10.1.2.0    10.1.3.0    10.1.4.0

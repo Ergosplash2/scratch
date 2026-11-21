@@ -10,6 +10,13 @@
 #include "ns3/mobility-module.h"
 #include "ns3/flow-monitor-module.h"
 
+
+// this one is first.cc but it has two servers two clients, no cmd stats, 
+// complex topology, and global routing
+
+
+
+
 // Default Network Topology
 // djiksta (shortest path first algorithm)
 //       10.1.1.0    10.1.2.0    10.1.3.0    10.1.4.0

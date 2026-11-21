@@ -21,6 +21,17 @@
 #include "ns3/netanim-module.h"
 
 
+// this one is first.cc, 2clients 2 servers, cmd stats, complex topo.
+
+
+
+
+
+
+
+
+
+
 // Default Network Topology
 // djiksta (shortest path first algorithm)
 //       10.1.1.0    10.1.2.0    10.1.3.0    10.1.4.0
